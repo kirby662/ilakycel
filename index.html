@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jaygay Tech - Student Tech Store</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #8b4fc9;
+            --secondary: #6b2fa0;
+            --accent: #00d9ff;
+            --dark: #1a0033;
+            --light: #f5f5f5;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, #2d1b4e 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(139, 79, 201, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .tagline {
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 15px;
+            margin: 30px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.05) 10px,
+                rgba(255,255,255,0.05) 20px
+            );
+            animation: slide 20s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .btn-shop {
+            background: var(--accent);
+            color: var(--dark);
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-shop:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.4);
+        }
+
+        /* Products Grid */
+        .products-section {
+            margin: 50px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 40px;
+            color: var(--accent);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: rgba(139, 79, 201, 0.1);
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(139, 79, 201, 0.5);
+            border-color: var(--accent);
+        }
+
+        .product-icon {
+            font-size: 64px;
+            margin-bottom: 15px;
+        }
+
+        .product-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .product-desc {
+            color: #ccc;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .btn-add-cart {
+            background: var(--primary);
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-add-cart:hover {
+            background: var(--secondary);
+            transform: scale(1.05);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #2d1b4e 0%, var(--dark) 100%);
+            margin: 5% auto;
+            padding: 40px;
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 30px;
+            cursor: pointer;
+            color: var(--accent);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--accent);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            background: rgba(139, 79, 201, 0.1);
+            color: white;
+            font-size: 16px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-submit:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(139, 79, 201, 0.5);
+        }
+
+        .social-login {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-social {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-social:hover {
+            background: var(--primary);
+        }
+
+        .verification-code {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .code-input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 24px;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            background: rgba(139, 79, 201, 0.1);
+            color: white;
+        }
+
+        .success-message {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .success-icon {
+            font-size: 80px;
+            color: #4caf50;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            .products-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div>
+                <div class="logo">🎮 Jaygay Tech</div>
+                <div class="tagline">Student Tech, Student Prices - No Compromises</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Welcome to Jaygay Tech</h1>
+                <p>Premium Gaming & Tech Gear for Students</p>
+                <button class="btn-shop" onclick="scrollToProducts()">Shop Now</button>
+            </div>
+        </section>
+
+        <section class="products-section" id="products">
+            <h2 class="section-title">Featured Products</h2>
+            <div class="products-grid">
+                <div class="product-card" onclick="openCheckout('Razer Gaming Mouse')">
+                    <div class="product-icon">🖱️</div>
+                    <div class="product-name">Razer Gaming Mouse</div>
+                    <div class="product-desc">Wireless gaming mouse with RGB lighting</div>
+                    <button class="btn-add-cart">Add to Cart</button>
+                </div>
+
+                <div class="product-card" onclick="openCheckout('Mechanical Keyboard')">
+                    <div class="product-icon">⌨️</div>
+                    <div class="product-name">Mechanical Keyboard</div>
+                    <div class="product-desc">RGB backlit mechanical keyboard</div>
+                    <button class="btn-add-cart">Add to Cart</button>
+                </div>
+
+                <div class="product-card" onclick="openCheckout('Gaming Monitor')">
+                    <div class="product-icon">🖥️</div>
+                    <div class="product-name">Gaming Monitor</div>
+                    <div class="product-desc">144Hz refresh rate, 1ms response time</div>
+                    <button class="btn-add-cart">Add to Cart</button>
+                </div>
+
+                <div class="product-card" onclick="openCheckout('Gaming Headset')">
+                    <div class="product-icon">🎧</div>
+                    <div class="product-name">Gaming Headset</div>
+                    <div class="product-desc">7.1 surround sound with noise cancellation</div>
+                    <button class="btn-add-cart">Add to Cart</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('checkoutModal')">&times;</span>
+            <h2 style="color: var(--accent); margin-bottom: 30px;">Checkout</h2>
+            <form id="checkoutForm" onsubmit="processCheckout(event)">
+                <div class="form-group">
+                    <label>Product</label>
+                    <input type="text" id="productName" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Delivery Address</label>
+                    <input type="text" id="deliveryAddress" placeholder="Enter your address" required>
+                </div>
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="number" id="quantity" value="1" min="1" required>
+                </div>
+                <button type="submit" class="btn-submit">Place Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2 style="color: var(--accent); margin-bottom: 30px;">Login</h2>
+            <form id="loginForm" onsubmit="processLogin(event)">
+                <div class="form-group">
+                    <label>Username/Email/Phone</label>
+                    <input type="text" id="loginUsername" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn-submit">Log In</button>
+                <div class="social-login">
+                    <button type="button" class="btn-social">📘 Facebook</button>
+                    <button type="button" class="btn-social">🔍 Google</button>
+                </div>
+                <p style="text-align: center; margin-top: 20px;">
+                    <a href="#" onclick="openModal('signupModal'); closeModal('loginModal');" style="color: var(--accent);">New to PC Tech? Sign Up</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('signupModal')">&times;</span>
+            <h2 style="color: var(--accent); margin-bottom: 30px;">Sign Up</h2>
+            <form id="signupForm" onsubmit="processSignup(event)">
+                <div class="form-group">
+                    <label>Email/Phone</label>
+                    <input type="text" id="signupContact" placeholder="Enter email or phone" required>
+                </div>
+                <button type="submit" class="btn-submit">Next</button>
+                <div class="social-login">
+                    <button type="button" class="btn-social">📘 Facebook</button>
+                    <button type="button" class="btn-social">🔍 Google</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Verification Modal -->
+    <div id="verificationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('verificationModal')">&times;</span>
+            <h2 style="color: var(--accent); margin-bottom: 20px;">Enter Verification Code</h2>
+            <p style="text-align: center; margin-bottom: 30px;">Your verification code is sent via Email to</p>
+            <form id="verificationForm" onsubmit="verifyCode(event)">
+                <div class="verification-code">
+                    <input type="text" class="code-input" maxlength="1" required>
+                    <input type="text" class="code-input" maxlength="1" required>
+                    <input type="text" class="code-input" maxlength="1" required>
+                    <input type="text" class="code-input" maxlength="1" required>
+                    <input type="text" class="code-input" maxlength="1" required>
+                    <input type="text" class="code-input" maxlength="1" required>
+                </div>
+                <p style="text-align: center; margin: 20px 0;">
+                    <a href="#" style="color: var(--accent);">Did not receive the code?</a>
+                </p>
+                <button type="submit" class="btn-submit">Next</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Set Password Modal -->
+    <div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('passwordModal')">&times;</span>
+            <h2 style="color: var(--accent); margin-bottom: 20px;">Set your Password</h2>
+            <p style="text-align: center; margin-bottom: 30px;">Create a new password</p>
+            <form id="passwordForm" onsubmit="setPassword(event)">
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="newPassword" placeholder="Enter password" required>
+                    <small style="color: #ccc;">At least one lowercase and uppercase character</small>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+                </div>
+                <div class="form-group">
+                    <label>Recovery Email</label>
+                    <input type="email" id="recoveryEmail" placeholder="Enter recovery email" required>
+                </div>
+                <button type="submit" class="btn-submit">Done</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <div class="success-message">
+                <div class="success-icon">✓</div>
+                <h2 style="color: var(--accent); margin-bottom: 20px;">Order Complete</h2>
+                <p>Thank you!</p>
+                <p style="margin-top: 20px;">Thank you for your order!</p>
+                <button class="btn-submit" style="margin-top: 30px;" onclick="closeModal('successModal')">Go back</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function scrollToProducts() {
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function openCheckout(productName) {
+            document.getElementById('productName').value = productName;
+            openModal('checkoutModal');
+        }
+
+        function processCheckout(event) {
+            event.preventDefault();
+            const formData = {
+                product: document.getElementById('productName').value,
+                address: document.getElementById('deliveryAddress').value,
+                quantity: document.getElementById('quantity').value
+            };
+            
+            fetch('api.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'checkout', data: formData })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    closeModal('checkoutModal');
+                    openModal('successModal');
+                }
+            });
+        }
+
+        function processLogin(event) {
+            event.preventDefault();
+            const formData = {
+                username: document.getElementById('loginUsername').value,
+                password: document.getElementById('loginPassword').value
+            };
+            
+            fetch('api.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'login', data: formData })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Login successful!');
+                    closeModal('loginModal');
+                }
+            });
+        }
+
+        function processSignup(event) {
+            event.preventDefault();
+            closeModal('signupModal');
+            openModal('verificationModal');
+        }
+
+        function verifyCode(event) {
+            event.preventDefault();
+            closeModal('verificationModal');
+            openModal('passwordModal');
+        }
+
+        function setPassword(event) {
+            event.preventDefault();
+            const password = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            const formData = {
+                password: password,
+                recoveryEmail: document.getElementById('recoveryEmail').value
+            };
+            
+            fetch('api.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'register', data: formData })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    closeModal('passwordModal');
+                    alert('Registration successful!');
+                }
+            });
+        }
+
+        // Auto-focus next input in verification code
+        document.querySelectorAll('.code-input').forEach((input, index, inputs) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

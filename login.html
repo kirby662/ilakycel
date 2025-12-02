@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Jaygay Tech</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a0033 0%, #2d1b4e 50%, #1a0033 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 30px,
+                rgba(139, 79, 201, 0.03) 30px,
+                rgba(139, 79, 201, 0.03) 60px
+            );
+            animation: slide 30s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .login-container {
+            background: rgba(139, 79, 201, 0.1);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(139, 79, 201, 0.3);
+            border-radius: 25px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-icon {
+            font-size: 64px;
+            margin-bottom: 15px;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .logo-text {
+            font-size: 32px;
+            font-weight: bold;
+            color: #00d9ff;
+            margin-bottom: 10px;
+        }
+
+        .logo-tagline {
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        h2 {
+            color: #00d9ff;
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #00d9ff;
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            color: #8b4fc9;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px 15px 15px 50px;
+            border: 2px solid rgba(139, 79, 201, 0.5);
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #00d9ff;
+            background: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
+        }
+
+        .form-group input::placeholder {
+            color: #888;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #8b4fc9;
+            cursor: pointer;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        .password-toggle:hover {
+            color: #00d9ff;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 25px;
+        }
+
+        .forgot-password a {
+            color: #00d9ff;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .forgot-password a:hover {
+            color: #8b4fc9;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #8b4fc9 0%, #6b2fa0 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(139, 79, 201, 0.5);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 30px 0;
+            color: #888;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(139, 79, 201, 0.3);
+        }
+
+        .divider span {
+            padding: 0 15px;
+            font-size: 14px;
+        }
+
+        .social-login {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn-social {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid rgba(139, 79, 201, 0.5);
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-social:hover {
+            border-color: #00d9ff;
+            background: rgba(139, 79, 201, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .signup-link {
+            text-align: center;
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        .signup-link a {
+            color: #00d9ff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .signup-link a:hover {
+            color: #8b4fc9;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+            cursor: pointer;
+            accent-color: #8b4fc9;
+        }
+
+        .remember-me label {
+            color: #ccc;
+            font-size: 14px;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 40px 25px;
+            }
+
+            .logo-text {
+                font-size: 28px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            .social-login {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo-section">
+            <div class="logo-icon">🎮</div>
+            <div class="logo-text">Jaygay Tech</div>
+            <div class="logo-tagline">Student Tech, Student Prices</div>
+        </div>
+
+        <h2>Welcome Back</h2>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="username">Username / Email / Phone</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">👤</span>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        placeholder="Enter your username, email or phone"
+                        required
+                    >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">🔒</span>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Enter your password"
+                        required
+                    >
+                    <button type="button" class="password-toggle" onclick="togglePassword()">
+                        👁️
+                    </button>
+                </div>
+            </div>
+
+            <div class="remember-me">
+                <input type="checkbox" id="remember" name="remember">
+                <label for="remember">Remember me</label>
+            </div>
+
+            <div class="forgot-password">
+                <a href="#" onclick="forgotPassword()">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="btn-login">Log In</button>
+        </form>
+
+        <div class="divider">
+            <span>Or continue with</span>
+        </div>
+
+        <div class="social-login">
+            <button class="btn-social" onclick="loginWithFacebook()">
+                <span>📘</span> Facebook
+            </button>
+            <button class="btn-social" onclick="loginWithGoogle()">
+                <span>🔍</span> Google
+            </button>
+        </div>
+
+        <div class="signup-link">
+            New to Jaygay Tech? <a href="#" onclick="goToSignup()">Sign Up</a>
+        </div>
+    </div>
+
+    <script>
+        // Configuration - set to true to use backend, false for demo mode
+        const USE_BACKEND = false;
+
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleBtn = document.querySelector('.password-toggle');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleBtn.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                toggleBtn.textContent = '👁️';
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const remember = document.getElementById('remember').checked;
+
+            // Validate inputs
+            if (!username || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            if (!USE_BACKEND) {
+                // Demo mode - simple validation
+                if (username.length > 0 && password.length > 3) {
+                    alert('Login successful! Welcome back, ' + username + '!');
+                    // Store user info in sessionStorage
+                    sessionStorage.setItem('loggedIn', 'true');
+                    sessionStorage.setItem('username', username);
+                    // Redirect to home page
+                    window.location.href = 'index.html';
+                } else {
+                    alert('Password must be at least 4 characters');
+                }
+                return;
+            }
+
+            // Backend mode - send request to api.php
+            fetch('api.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    action: 'login',
+                    data: {
+                        username: username,
+                        password: password,
+                        remember: remember
+                    }
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    alert('Login successful! Welcome back!');
+                    sessionStorage.setItem('loggedIn', 'true');
+                    sessionStorage.setItem('username', username);
+                    window.location.href = 'index.html';
+                } else {
+                    alert('Login failed: ' + (data.message || 'Invalid credentials'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Cannot connect to server. Please check if api.php is set up correctly.');
+            });
+        }
+
+        function forgotPassword() {
+            alert('Password reset link will be sent to your email!');
+            // In production, redirect to forgot password page
+            // window.location.href = 'forgot-password.html';
+        }
+
+        function loginWithFacebook() {
+            alert('Facebook login will be implemented soon!');
+            // Implement Facebook OAuth
+        }
+
+        function loginWithGoogle() {
+            alert('Google login will be implemented soon!');
+            // Implement Google OAuth
+        }
+
+        function goToSignup() {
+            // Redirect to signup page
+            alert('Redirecting to signup page...');
+            // window.location.href = 'signup.html';
+        }
+
+        // Add enter key support
+        document.getElementById('loginForm').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleLogin(e);
+            }
+        });
+    </script>
+</body>
+</html>
